@@ -86,8 +86,8 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
         for f in features:
             values = f.strip().split(" is ")
             print("Processing feature:", f)
-            if values[0] in columns and not td[values[0]]:
-                if len(values) >= 2:
+            if values[0] in columns and td[values[0]] is None:
+                if len(values) >= 2 and values[1]:
                     td[values[0]] = [values[1]]
         print("Transformed data:", td)
                 
