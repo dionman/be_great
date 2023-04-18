@@ -80,7 +80,7 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
     for t in text:
         print("Processing text:", t)
         features = t.split(",")
-        td = dict.fromkeys(columns)
+        td = dict.fromkeys(columns, None)  # Initialize td with None for all keys
         
         # Transform all features back to tabular data
         for f in features:
@@ -94,4 +94,3 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
         df_gen = pd.concat([df_gen, pd.DataFrame(td)], ignore_index=True, axis=0)
         print("DataFrame after concatenation:", df_gen)
     return df_gen
-
