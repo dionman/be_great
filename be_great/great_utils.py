@@ -66,11 +66,14 @@ def _convert_tokens_to_text(tokens: tp.List[torch.Tensor], tokenizer: AutoTokeni
 
     return text_data
 
+
 def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> pd.DataFrame:
     """ Converts the sentences back to tabular data
+
     Args:
         text: List of the tabular data in text form
         df_gen: Pandas DataFrame where the tabular data is appended
+
     Returns:
         Pandas DataFrame with the tabular data from the text appended
     """
@@ -78,19 +81,18 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
         
     # Convert text to tabular data
     for t in text:
-        print("Processing text:", t)
         features = t.split(",")
-        td = dict.fromkeys(columns, None)  # Initialize td with None for all keys
+        td = dict.fromkeys(columns)
         
         # Transform all features back to tabular data
         for f in features:
             values = f.strip().split(" is ")
-            print("Processing feature:", f)
-            if values[0] in columns and td[values[0]] is None:
-                if len(values) >= 2 and values[1]:
+            if values[0] in columns and not td[values[0]]:
+                try:
                     td[values[0]] = [values[1]]
-        print("Transformed data:", td)
+                except IndexError:
+                    #print("An Index Error occurred - if this happends a lot, consider fine-tuning your model further.")
+                    pass
                 
         df_gen = pd.concat([df_gen, pd.DataFrame(td)], ignore_index=True, axis=0)
-        print("DataFrame after concatenation:", df_gen)
     return df_gen
