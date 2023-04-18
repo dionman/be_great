@@ -78,15 +78,20 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
         
     # Convert text to tabular data
     for t in text:
+        print("Processing text:", t)
         features = t.split(",")
         td = dict.fromkeys(columns)
         
         # Transform all features back to tabular data
         for f in features:
             values = f.strip().split(" is ")
+            print("Processing feature:", f)
             if values[0] in columns and not td[values[0]]:
                 if len(values) >= 2:
                     td[values[0]] = [values[1]]
+        print("Transformed data:", td)
                 
         df_gen = pd.concat([df_gen, pd.DataFrame(td)], ignore_index=True, axis=0)
+        print("DataFrame after concatenation:", df_gen)
     return df_gen
+
