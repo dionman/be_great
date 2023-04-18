@@ -87,6 +87,7 @@ def _convert_text_to_tabular_data(text: tp.List[str], df_gen: pd.DataFrame) -> p
         # Transform all features back to tabular data
         for f in features:
             values = f.strip().split(" is ")
+            print(f"td : {td} and values 0 : {values[0]}")
             if values[0] in columns and not td[values[0]]:
                 try:
                     td[values[0]] = [values[1]]
